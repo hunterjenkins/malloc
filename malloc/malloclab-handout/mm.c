@@ -14,7 +14,11 @@
 
 //returns a pointer to the header to the given payload's block
 //bp = "Block Payload pointer"
-#define HDRP(bp) ((char *)(bp) - (sizeof(block_header)  ) )
+#define HDRP(bp) ((char *)(bp) - (sizeof(block_header) ) )
+
+//returns a pointer to the footer to the given payload's block
+#define FTRP(bp) ((char *)(bp) - (sizeof(block_footer) ) )
+
 
 //returns the size of the given block
 #define GET_SIZE(p)  ((block_header *)(p))->size
@@ -24,6 +28,9 @@
 
 //returns a payload pointer for the next block, given a payload pointer
 #define NEXT_BLKP(bp) ((char *)(bp) + GET_SIZE(HDRP(bp)))
+
+
+#define PREV_BLKP(bp) ((char *)(bp) + GET_SIZE(FTRP(bp)))
 
 //representation of header and is a multiple of the alignment
 typedef struct {
@@ -58,19 +65,19 @@ void mm_init(void *heap, size_t heap_size)
 
   //this is actually setting the size
   GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) );
-  printf("B\n");
+  // printf("B\n");
   //sets the allocation status
   GET_ALLOC(HDRP(bp)) = 0;
-  printf("C\n");
+  // printf("C\n");
   first_bp = bp;
-  printf("D\n");
+  // printf("D\n");
   //create terminator block
 
   //The next bp is the very end, which will be the terminator block
   GET_SIZE(HDRP(NEXT_BLKP(bp))) = 0;
-    printf("E\n");
+    // printf("E\n");
   GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 1;
-    printf("F\n");
+    // printf("F\n");
 
 }
 
@@ -79,7 +86,6 @@ void mm_init(void *heap, size_t heap_size)
 static void set_allocated(void *bp, size_t block_size)
 {
   printf("set_allocated\n");
-
 
   //Current_size of the payload
   size_t current_size = GET_SIZE(HDRP(bp));
@@ -150,4 +156,41 @@ void mm_free(void *bp)
 
 
   GET_ALLOC(HDRP(bp)) = 0;
+
+  coalesce(bp);
+}
+
+
+void *coalesce(void *bp) {
+
+  size_t prev_alloc = GET_ALLOC(HDRP(PREV_BLKP(bp)));
+  size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));
+  size_t size       = GET_SIZE(HDRP(bp));
+
+
+  if (prev_alloc && next_alloc) { /* Case 1 */
+    /* nothing to do */
+  }
+
+  else if (prev_alloc && !next_alloc) { /* Case 2 */
+     size += GET_SIZE(HDRP(NEXT_BLKP(bp)));
+     GET_SIZE(HDRP(bp)) = size;
+     GET_SIZE(FTRP(bp)) = size;
+  }
+
+  else if (!prev_alloc && next_alloc) { /* Case 3 */
+     size += GET_SIZE(HDRP(PREV_BLKP(bp)));
+     GET_SIZE(FTRP(bp)) = size;
+     GET_SIZE(HDRP(PREV_BLKP(bp))) = size;
+     bp = PREV_BLKP(bp);
+   }
+
+   else { /* Case 4 */
+     size += (GET_SIZE(HDRP(PREV_BLKP(bp)))
+     + GET_SIZE(HDRP(NEXT_BLKP(bp))));
+     GET_SIZE(HDRP(PREV_BLKP(bp))) = size;
+     GET_SIZE(FTRP(NEXT_BLKP(bp))) = size;
+     bp = PREV_BLKP(bp);
+   }
+
 }
