@@ -56,7 +56,7 @@ void mm_init(void *heap, size_t heap_size)
   //assuming block header is a multiple of alignment
 
   //this is actually setting the size
-  GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) );
+  GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) ) );
 
   //sets the allocation status
   GET_ALLOC(HDRP(bp)) = 0;
