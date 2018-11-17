@@ -98,7 +98,7 @@ void *mm_malloc(size_t size)
     if (GET_SIZE(HDRP(bp)) == 0)
     {
       printf("Found the null terminator block\n");
-      break;
+      //break;
     }
 
 
