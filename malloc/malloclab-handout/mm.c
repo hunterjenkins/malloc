@@ -148,6 +148,9 @@ void *mm_malloc(size_t size)
 
 }
 
+
+void *coalesce(void *bp);
+
 void mm_free(void *bp)
 {
   // Callers must ensure that bp is actually allocated
