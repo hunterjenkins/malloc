@@ -17,7 +17,8 @@
 #define HDRP(bp) ((char *)(bp) - (sizeof(block_header) ) )
 
 //returns a pointer to the footer to the given payload's block
-#define FTRP(bp) ((char *)(bp) - (sizeof(block_footer) ) )
+// #define FTRP(bp) ((char *)(bp) - (sizeof(block_footer) ) )
+#define FTRP(bp) ((char *)(bp)+GET_SIZE(HDRP(bp))-OVERHEAD)
 
 
 //returns the size of the given block
@@ -157,8 +158,9 @@ void mm_free(void *bp)
 
   printf("mm_free\n");
 
+//TODO: call coalesce before allocating?
   coalesce(bp);
-  
+
   GET_ALLOC(HDRP(bp)) = 0;
 
 
