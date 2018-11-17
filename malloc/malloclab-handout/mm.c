@@ -91,10 +91,10 @@ void *mm_malloc(size_t size)
   void *bp = first_bp; //I don't know if we'll want this to be the first_bp. TODO
 
   //Don't stop until we've found a place or every place is taken up
-  while (1)
-  {
-  bp = NEXT_BLKP(bp);
-    //TODO: be able to find the null terminator block
+  // while (1)
+  // {
+
+    //Find the null terminator block
     if (GET_SIZE(HDRP(bp)) == 0)
     {
       printf("Found the null terminator block\n");
@@ -102,31 +102,31 @@ void *mm_malloc(size_t size)
     }
 
 
-    // //If this bp is allocated or if there is no space at this block
-    // if (GET_ALLOC(HDRP(bp)) == 1 || ((size + OVERHEAD) > GET_SIZE(HDRP(bp))))
-    // {
-    //   //Go to the next block
-    //   bp = NEXT_BLKP(bp);
-    //
-    //   if (GET_ALLOC(HDRP(bp)) == 1 || ((size + OVERHEAD) > GET_SIZE(HDRP(bp))))
-    //   {
-    //     set_allocated(bp, ALIGN(size + OVERHEAD));
-    //   }
-    //   else
-    //   {
-    //     return NULL;
-    //   }
-    //
-    // }
-    // else
-    // {
-    //   set_allocated(bp, ALIGN(size + OVERHEAD));
-    //   return bp;
-    // }
+    //If this bp is allocated or if there is no space at this block
+    if (GET_ALLOC(HDRP(bp)) == 1 || ((size + OVERHEAD) > GET_SIZE(HDRP(bp))))
+    {
+      //Go to the next block
+      bp = NEXT_BLKP(bp);
+
+      // if (GET_ALLOC(HDRP(bp)) == 1 || ((size + OVERHEAD) > GET_SIZE(HDRP(bp))))
+      // {
+      //   set_allocated(bp, ALIGN(size + OVERHEAD));
+      // }
+      // else
+      // {
+      //   return NULL;
+      // }
+
+    }
+    else
+    {
+      set_allocated(bp, ALIGN(size + OVERHEAD));
+      return bp;
+    }
 
 
 
-  }
+  //}
 
 
 }
