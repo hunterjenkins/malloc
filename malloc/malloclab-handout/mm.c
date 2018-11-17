@@ -10,11 +10,11 @@
 #define ALIGN(size) (((size) + (ALIGNMENT-1)) & ~(ALIGNMENT-1))
 
 //excess space in block not used for payload
-#define OVERHEAD sizeof(block_header)
+#define OVERHEAD sizeof(block_header + block_footer)
 
 //returns a pointer to the header to the given payload's block
 //bp = "Block Payload pointer"
-#define HDRP(bp) ((char *)(bp) - sizeof(block_header))
+#define HDRP(bp) ((char *)(bp) - (sizeof(block_header) + sizeof(block_footer))
 
 //returns the size of the given block
 #define GET_SIZE(p)  ((block_header *)(p))->size
@@ -31,6 +31,10 @@ typedef struct {
   char   allocated;
 } block_header;
 
+typedef struct {
+  size_t size;
+} block_footer;
+
 
 //pointer to the payload of the first block in our heap
 void *first_bp;
@@ -43,7 +47,6 @@ void mm_init(void *heap, size_t heap_size)
 
   printf("Heap size: %ld\n", heap_size);
 
-
   // here's a place where we depend on
   // block_header being a multiple of ALIGNMENT:
   bp = heap + sizeof(block_header);
@@ -53,7 +56,7 @@ void mm_init(void *heap, size_t heap_size)
   //assuming block header is a multiple of alignment
 
   //this is actually setting the size
-  GET_SIZE(HDRP(bp)) = heap_size - sizeof(block_header);
+  GET_SIZE(HDRP(bp)) = heap_size - (sizeof(block_header) + sizeof(block_footer));
 
   //sets the allocation status
   GET_ALLOC(HDRP(bp)) = 0;
@@ -72,14 +75,25 @@ void mm_init(void *heap, size_t heap_size)
 //Helper method for mm_malloc
 static void set_allocated(void *bp, size_t block_size)
 {
+  //Current_size of the payload
   size_t current_size = GET_SIZE(HDRP(bp));
+
+  //grab the next bp
   void* second_bp = bp + block_size;
+
+  //Allocate the current payload
   GET_ALLOC(HDRP(bp)) = 1;
+
+  //if this block will fit
   if((block_size + OVERHEAD) < current_size)
     {
+      //set the size of the new payload
       GET_SIZE(HDRP(bp)) = block_size;
-      //second_bp = NEXT_BLKP(bp);
+
+      //The next payload will be 0
       GET_ALLOC(HDRP(second_bp)) = 0;
+
+      //Set the next size accordingly. 
       GET_SIZE(HDRP(second_bp)) = current_size - block_size;
     }
 }
@@ -109,15 +123,6 @@ void *mm_malloc(size_t size)
     {
       //Go to the next block
       bp = NEXT_BLKP(bp);
-
-      // if (GET_ALLOC(HDRP(bp)) == 1 || ((size + OVERHEAD) > GET_SIZE(HDRP(bp))))
-      // {
-      //   set_allocated(bp, ALIGN(size + OVERHEAD));
-      // }
-      // else
-      // {
-      //   return NULL;
-      // }
 
     }
     else
