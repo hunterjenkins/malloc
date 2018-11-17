@@ -51,23 +51,26 @@ void mm_init(void *heap, size_t heap_size)
   // block_header being a multiple of ALIGNMENT:
   bp = heap + sizeof(block_header);
 
+  printf("A\n");
   // relying on heap_size being a multiple of 16,
   // which is part of the spec for mm_init
   //assuming block header is a multiple of alignment
 
   //this is actually setting the size
-  GET_SIZE(HDRP(bp)) = (heap_size - OVERHEAD );
-
+  GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) );
+  printf("B\n");
   //sets the allocation status
   GET_ALLOC(HDRP(bp)) = 0;
-
+  printf("C\n");
   first_bp = bp;
-
+  printf("D\n");
   //create terminator block
 
   //The next bp is the very end, which will be the terminator block
   GET_SIZE(HDRP(NEXT_BLKP(bp))) = 0;
+    printf("E\n");
   GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 1;
+    printf("F\n");
 
 }
 
