@@ -17,7 +17,6 @@
 #define HDRP(bp) ((char *)(bp) - (sizeof(block_header) ) )
 
 //returns a pointer to the footer to the given payload's block
-// #define FTRP(bp) ((char *)(bp) - (sizeof(block_footer) ) )
 #define FTRP(bp) ((char *)(bp)+GET_SIZE(HDRP(bp))-OVERHEAD)
 
 
@@ -31,7 +30,8 @@
 #define NEXT_BLKP(bp) ((char *)(bp) + GET_SIZE(HDRP(bp)))
 
 
-#define PREV_BLKP(bp) ((char *)(bp) + GET_SIZE(FTRP(bp)))
+#define PREV_BLKP(bp) ((char *)(bp)-GET_SIZE((char *)(bp)-OVERHEAD))
+
 
 //representation of header and is a multiple of the alignment
 typedef struct {
