@@ -75,6 +75,9 @@ void mm_init(void *heap, size_t heap_size)
 //Helper method for mm_malloc
 static void set_allocated(void *bp, size_t block_size)
 {
+  printf("set_allocated\n");
+
+
   //Current_size of the payload
   size_t current_size = GET_SIZE(HDRP(bp));
 
@@ -103,6 +106,7 @@ static void set_allocated(void *bp, size_t block_size)
 //Size = how many bytes we want to allocate
 void *mm_malloc(size_t size)
 {
+  printf("mm_malloc\n");
   void *bp = first_bp; //I don't know if we'll want this to be the first_bp. TODO
 
   //Don't stop until we've found a place or every place is taken up
@@ -138,6 +142,9 @@ void *mm_malloc(size_t size)
 void mm_free(void *bp)
 {
   // Callers must ensure that bp is actually allocated
+
+  printf("mm_free\n");
+
 
   GET_ALLOC(HDRP(bp)) = 0;
 }
