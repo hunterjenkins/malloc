@@ -14,7 +14,7 @@
 
 //returns a pointer to the header to the given payload's block
 //bp = "Block Payload pointer"
-#define HDRP(bp) ((char *)(bp) - (sizeof(block_header) + sizeof(block_footer) ) )
+#define HDRP(bp) ((char *)(bp) - (sizeof(block_header)  ) )
 
 //returns the size of the given block
 #define GET_SIZE(p)  ((block_header *)(p))->size
