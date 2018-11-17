@@ -10,7 +10,7 @@
 #define ALIGN(size) (((size) + (ALIGNMENT-1)) & ~(ALIGNMENT-1))
 
 //excess space in block not used for payload
-#define OVERHEAD sizeof(block_header + block_footer)
+#define OVERHEAD sizeof(block_header) + sizeof(block_footer)
 
 //returns a pointer to the header to the given payload's block
 //bp = "Block Payload pointer"
@@ -93,7 +93,7 @@ static void set_allocated(void *bp, size_t block_size)
       //The next payload will be 0
       GET_ALLOC(HDRP(second_bp)) = 0;
 
-      //Set the next size accordingly. 
+      //Set the next size accordingly.
       GET_SIZE(HDRP(second_bp)) = current_size - block_size;
     }
 }
