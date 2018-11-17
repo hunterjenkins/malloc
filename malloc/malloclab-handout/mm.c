@@ -14,7 +14,7 @@
 
 //returns a pointer to the header to the given payload's block
 //bp = "Block Payload pointer"
-#define HDRP(bp) ((char *)(bp) - (sizeof(block_header) + sizeof(block_footer))
+#define HDRP(bp) ((char *)(bp) - (sizeof(block_header) + sizeof(block_footer) ) )
 
 //returns the size of the given block
 #define GET_SIZE(p)  ((block_header *)(p))->size
@@ -56,7 +56,7 @@ void mm_init(void *heap, size_t heap_size)
   //assuming block header is a multiple of alignment
 
   //this is actually setting the size
-  GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) ) );
+  GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) );
 
   //sets the allocation status
   GET_ALLOC(HDRP(bp)) = 0;
