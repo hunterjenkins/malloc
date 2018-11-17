@@ -10,7 +10,7 @@
 #define ALIGN(size) (((size) + (ALIGNMENT-1)) & ~(ALIGNMENT-1))
 
 //excess space in block not used for payload
-#define OVERHEAD sizeof(block_header) + sizeof(block_footer)
+#define OVERHEAD (sizeof(block_header) + sizeof(block_footer))
 
 //returns a pointer to the header to the given payload's block
 //bp = "Block Payload pointer"
@@ -56,7 +56,7 @@ void mm_init(void *heap, size_t heap_size)
   //assuming block header is a multiple of alignment
 
   //this is actually setting the size
-  GET_SIZE(HDRP(bp)) = heap_size - (sizeof(block_header) + sizeof(block_footer));
+  GET_SIZE(HDRP(bp)) = heap_size - ( sizeof(block_header) + sizeof(block_footer) );
 
   //sets the allocation status
   GET_ALLOC(HDRP(bp)) = 0;
@@ -130,9 +130,6 @@ void *mm_malloc(size_t size)
       set_allocated(bp, ALIGN(size + OVERHEAD));
       return bp;
     }
-
-
-
   }
 
 
