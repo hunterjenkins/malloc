@@ -32,7 +32,7 @@ typedef struct {
 } block_header;
 
 typedef struct {
-  size_t size;
+  size_t sizee;
 } block_footer;
 
 
