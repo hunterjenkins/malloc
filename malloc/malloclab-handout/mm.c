@@ -166,9 +166,13 @@ void mm_free(void *bp)
 
 
 void *coalesce(void *bp) {
+  printf("coalesce\n");
 
+  printf("A\n");
   size_t prev_alloc = GET_ALLOC(HDRP(PREV_BLKP(bp)));
+  printf("B\n");
   size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));
+  printf("C\n");
   size_t size       = GET_SIZE(HDRP(bp));
 
 
