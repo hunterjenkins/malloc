@@ -80,7 +80,7 @@ void mm_init(void *heap, size_t heap_size)
     // printf("E\n");
   GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 1;
     // printf("F\n");
-
+ mm_malloc(0);
 }
 
 
