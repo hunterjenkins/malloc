@@ -64,6 +64,7 @@ void mm_init(void *heap, size_t heap_size)
   // relying on heap_size being a multiple of 16,
   // which is part of the spec for mm_init
   //assuming block header is a multiple of alignment
+  mm_malloc(0);
 
   //this is actually setting the size
   GET_SIZE(HDRP(bp)) = (heap_size - ( sizeof(block_header) + sizeof(block_footer) ) );
@@ -75,7 +76,6 @@ void mm_init(void *heap, size_t heap_size)
   // printf("D\n");
   //create terminator block
 
-  mm_malloc(0);
 
   //The next bp is the very end, which will be the terminator block
   GET_SIZE(HDRP(NEXT_BLKP(bp))) = 0;
