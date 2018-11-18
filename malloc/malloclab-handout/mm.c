@@ -41,6 +41,7 @@ typedef struct {
 
 typedef struct {
   size_t size;
+  int filler;
 } block_footer;
 
 
@@ -158,13 +159,9 @@ void mm_free(void *bp)
 
   printf("mm_free\n");
 
-//TODO: call coalesce before allocating?
-
 
   GET_ALLOC(HDRP(bp)) = 0;
   coalesce(bp);
-
-
 }
 
 
