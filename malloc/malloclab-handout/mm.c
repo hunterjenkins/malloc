@@ -89,7 +89,7 @@ void mm_init(void *heap, size_t heap_size)
 
 
 //Helper method for mm_malloc
-static void set_allocated(void *bp, size_t block_size)
+static void set_allocated(void *bp, size_t size)
 {
   printf("set_allocated\n");
 
