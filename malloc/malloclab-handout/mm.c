@@ -159,9 +159,10 @@ void mm_free(void *bp)
   printf("mm_free\n");
 
 //TODO: call coalesce before allocating?
-  coalesce(bp);
+
 
   GET_ALLOC(HDRP(bp)) = 0;
+  coalesce(bp);
 
 
 }
