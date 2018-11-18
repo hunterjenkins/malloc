@@ -93,27 +93,40 @@ static void set_allocated(void *bp, size_t block_size)
 {
   printf("set_allocated\n");
 
-  //Current_size of the payload
-  size_t current_size = GET_SIZE(HDRP(bp));
+  // //Current_size of the payload
+  // size_t current_size = GET_SIZE(HDRP(bp));
+  //
+  // //grab the next bp
+  // void* second_bp = bp + block_size;
+  //
+  // //Allocate the current payload
+  // GET_ALLOC(HDRP(bp)) = 1;
+  //
+  // //if this block will fit
+  // if((block_size + OVERHEAD) < current_size)
+  //   {
+  //     //set the size of the new payload
+  //     GET_SIZE(HDRP(bp)) = block_size;
+  //
+  //     //The next payload will be 0
+  //     GET_ALLOC(HDRP(second_bp)) = 0;
+  //
+  //     //Set the next size accordingly.
+  //     GET_SIZE(HDRP(second_bp)) = current_size - block_size;
+  //   }
 
-  //grab the next bp
-  void* second_bp = bp + block_size;
 
-  //Allocate the current payload
+
+  size_t extra_size = GET_SIZE(HDRP(bp)) - size;
+  if (extra_size > ALIGN(1 + OVERHEAD)){
+    GET_SIZE(HDRP(bp)) = size;
+    GET_SIZE(FTRP(bp)) = size;
+    GET_SIZE(HDRP(NEXT_BLKP(bp))) = extra_size;
+    GET_SIZE(FTRP(NEXT_BLKP(bp))) = extra_size;
+    GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 0;
+  }
   GET_ALLOC(HDRP(bp)) = 1;
 
-  //if this block will fit
-  if((block_size + OVERHEAD) < current_size)
-    {
-      //set the size of the new payload
-      GET_SIZE(HDRP(bp)) = block_size;
-
-      //The next payload will be 0
-      GET_ALLOC(HDRP(second_bp)) = 0;
-
-      //Set the next size accordingly.
-      GET_SIZE(HDRP(second_bp)) = current_size - block_size;
-    }
 }
 
 
