@@ -75,12 +75,14 @@ void mm_init(void *heap, size_t heap_size)
   // printf("D\n");
   //create terminator block
 
+  mm_malloc(0);
+
   //The next bp is the very end, which will be the terminator block
   GET_SIZE(HDRP(NEXT_BLKP(bp))) = 0;
     // printf("E\n");
   GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 1;
     // printf("F\n");
- mm_malloc(0);
+
 }
 
 
