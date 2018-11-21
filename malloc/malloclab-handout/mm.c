@@ -76,7 +76,6 @@ static void set_allocated(void *bp, size_t size)
 
     PUT(HDRP(NEXT_BLKP(bp)), PACK(extra_size, 0));
     PUT(FTRP(NEXT_BLKP(bp)), extra_size);
-
   }
 
   PUT(HDRP(bp), PACK(GET_SIZE(HDRP(bp)), 1));
