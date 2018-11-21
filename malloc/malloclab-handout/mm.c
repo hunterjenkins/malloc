@@ -68,9 +68,6 @@ void mm_init(void *heap, size_t heap_size)
 //Helper method for mm_malloc
 static void set_allocated(void *bp, size_t size)
 {
-  printf("set_allocated\n");
-
-
   size_t extra_size = GET_SIZE(HDRP(bp)) - size;
   if (extra_size > ALIGN(1 + OVERHEAD)){
 
