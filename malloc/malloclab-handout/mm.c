@@ -106,7 +106,7 @@ static void set_allocated(void *bp, size_t size)
   size_t extra_size = GET_SIZE(HDRP(bp)) - size;
   if (extra_size > ALIGN(1 + OVERHEAD)){
 
-    // PUT(HDRP(bp), PACK(size, 1)); //TODO: but we need to allocate this regardless?
+    PUT(HDRP(bp), PACK(size, 1)); //TODO: but we need to allocate this regardless?
     // GET_SIZE(HDRP(bp)) = size;
 
     PUT(FTRP(bp), PACK(size, 1));
@@ -120,7 +120,7 @@ static void set_allocated(void *bp, size_t size)
     // GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 0;
   }
   // GET_ALLOC(HDRP(bp)) = 1;
-  PUT(HDRP(bp), PACK(size, 1));
+
 }
 
 
