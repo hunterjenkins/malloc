@@ -70,7 +70,7 @@ void mm_init(void *heap, size_t heap_size)
 {
   void *bp;
   // void *bp = heap + sizeof(header) + 8;
-  bp = heap + sizeof(header) + 8;
+  bp = heap + sizeof(block_header) + 8;
   printf("Heap size: %ld\n", heap_size);
 
   // here's a place where we depend on
