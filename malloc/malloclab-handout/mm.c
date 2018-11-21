@@ -49,18 +49,6 @@ typedef size_t block_header;
 typedef size_t block_footer;
 
 
-//representation of header and is a multiple of the alignment
-// typedef struct {
-//   size_t size;
-//   char   allocated;
-// } block_header;
-//
-// typedef struct {
-//   size_t size;
-//   int filler;
-// } block_footer;
-
-
 //pointer to the payload of the first block in our heap
 void *first_bp;
 
@@ -119,7 +107,7 @@ static void set_allocated(void *bp, size_t size)
     // GET_SIZE(FTRP(NEXT_BLKP(bp))) = extra_size;
     // GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 0;
   }
-  // GET_ALLOC(HDRP(bp)) = 1;
+  GET_ALLOC(HDRP(bp)) = 1;
 
 }
 
@@ -142,7 +130,6 @@ void *mm_malloc(size_t size)
       return NULL;
       break;
     }
-
 
     //If this bp is allocated or if there is no space at this block
     if (GET_ALLOC(HDRP(bp)) == 1 || ((size + OVERHEAD) > GET_SIZE(HDRP(bp))))
