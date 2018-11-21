@@ -70,12 +70,12 @@ void mm_init(void *heap, size_t heap_size)
 {
   void *bp;
   // void *bp = heap + sizeof(header) + 8;
-  bp = heap + sizeof(block_header) + 8;
+  // bp = heap + sizeof(block_header) + 8;
   printf("Heap size: %ld\n", heap_size);
 
   // here's a place where we depend on
   // block_header being a multiple of ALIGNMENT:
-  bp = heap + sizeof(block_header);
+  bp = heap + sizeof(block_header) + 8;
 
   printf("A\n");
   // relying on heap_size being a multiple of 16,
@@ -83,7 +83,7 @@ void mm_init(void *heap, size_t heap_size)
   //assuming block header is a multiple of alignment
 
   //this is actually setting the size
-  PUT(HDRP(bp), PACK((heap_size - ( sizeof(block_header) + sizeof(block_footer))), 0 ))
+  PUT(HDRP(bp), PACK((heap_size - ( sizeof(block_header) + sizeof(block_footer))), 0 ));
 
 
   first_bp = bp;
