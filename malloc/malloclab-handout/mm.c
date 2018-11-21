@@ -106,7 +106,7 @@ static void set_allocated(void *bp, size_t size)
   size_t extra_size = GET_SIZE(HDRP(bp)) - size;
   if (extra_size > ALIGN(1 + OVERHEAD)){
 
-    PUT(HDRP(bp), PACK(size, 1)); //TODO: but we need to allocate this regardless?
+    // PUT(HDRP(bp), PACK(size, 1)); //TODO: but we need to allocate this regardless?
     // GET_SIZE(HDRP(bp)) = size;
 
     PUT(FTRP(bp), PACK(size, 1));
@@ -120,7 +120,7 @@ static void set_allocated(void *bp, size_t size)
     // GET_ALLOC(HDRP(NEXT_BLKP(bp))) = 0;
   }
   // GET_ALLOC(HDRP(bp)) = 1;
-
+  PUT(HDRP(bp), PACK(size, 1));
 }
 
 
@@ -149,7 +149,6 @@ void *mm_malloc(size_t size)
     {
       //Go to the next block
       bp = NEXT_BLKP(bp);
-
     }
     else
     {
@@ -167,7 +166,6 @@ void *coalesce(void *bp);
 void mm_free(void *bp)
 {
   // Callers must ensure that bp is actually allocated
-
   printf("mm_free\n");
 
   size_t sz = GET_SIZE(HDRP(bp));
@@ -205,8 +203,7 @@ void *coalesce(void *bp) {
    }
 
    else { /* Case 4 */
-     size += (GET_SIZE(HDRP(PREV_BLKP(bp)))
-     + GET_SIZE(HDRP(NEXT_BLKP(bp))));
+     size += (GET_SIZE(HDRP(PREV_BLKP(bp))) + GET_SIZE(HDRP(NEXT_BLKP(bp))));
 
      PUT(HDRP(PREV_BLKP(bp)), PACK(size, 0));
      // GET_SIZE(HDRP(PREV_BLKP(bp))) = size;
