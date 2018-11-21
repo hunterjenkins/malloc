@@ -89,7 +89,7 @@ void mm_init(void *heap, size_t heap_size)
   first_bp = bp;
 
   //create terminator block
-  PUT(HDRP(NEXT_BLKP(bp)), PACK(0, 1))
+  PUT(HDRP(NEXT_BLKP(bp)), PACK(0, 1));
 
   mm_malloc(0);
 
